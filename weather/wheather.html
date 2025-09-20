@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Fetcher (City Names)</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f0f8ff;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-left: 5px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .weather-box {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #fff;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      min-width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Title -->
+  <h2>Weather Fetcher</h2>
+
+  <!-- Input & Button -->
+  <div>
+    <input type="text" id="city" placeholder="Enter city name">
+    <button id="getWeather">Get Weather</button>
+  </div>
+
+  <!-- Weather Report (hidden until search) -->
+  <div id="weatherResult" class="weather-box" style="display:none;">
+    <h3 id="cityName"></h3>
+    <p><strong>Temperature:</strong> <span id="temp"></span>°C</p>
+    <p><strong>Wind Speed:</strong> <span id="wind"></span> km/h</p>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+      const cityCoords = {
+        delhi: { lat: 28.7041, lon: 77.1025 },
+        mumbai: { lat: 19.0760, lon: 72.8777 },
+        bangalore: { lat: 12.9716, lon: 77.5946 },
+        london: { lat: 51.5074, lon: -0.1278 },
+        newyork: { lat: 40.7128, lon: -74.0060 }
+      };
+
+      $("#getWeather").click(function(){
+        let city = $("#city").val().trim().toLowerCase();
+        if(city === ""){
+          alert("Please enter a city name!");
+          return;
+        }
+
+        if(!cityCoords[city]){
+          alert("City not available (Try Delhi, Mumbai, Bangalore, London, NewYork)");
+          return;
+        }
+
+        let coords = cityCoords[city];
+        let url = https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current_weather=true;
+
+        $.getJSON(url, function(data){
+          let weather = data.current_weather;
+
+          $("#cityName").text(city.charAt(0).toUpperCase() + city.slice(1));
+          $("#temp").text(weather.temperature);
+          $("#wind").text(weather.windspeed);
+          $("#weatherResult").fadeIn();
+        }).fail(function(){
+          alert("Could not fetch weather. Try again!");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #34495e;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;'
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      color: #ecf0f1;
+      padding-top: 50px;
+    }
+
+    .task-container {
+      background-color: #2c3e50;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      border: 2px solid #3498db;
+    }
+
+    h2 {
+      color: #3498db;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    #myInput {
+      padding: 10px;
+      width: 300px;
+      border: 1px solid #7f8c8d;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-right: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      background-color: #ecf0f1;
+      color: #333;
+    }
+
+    #add {
+      padding: 10px 20px;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    #add:hover {
+      background-color: #2980b9;
+    }
+
+    #list {
+      list-style-type: none;
+      padding: 0;
+      width: 450px;
+      margin-top: 20px;
+    }
+
+    #list li {
+      background-color: #4a6582;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      border: 1px solid #5d7a96;
+    }
+    
+    #list li:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .completed {
+      background-color: #f1c40f !important; /* yellow when completed */
+      color: #2c3e50;
+    }
+
+    .complete-btn {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .complete-btn:hover {
+      background-color: #1e8449;
+    }
+
+    .remove-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .remove-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="task-container">
+    <h2>Task Manager</h2>
+    <div class="input-group">
+      <input type="text" id="myInput" placeholder="Enter a new task">
+      <button id="add">Add Task</button>
+    </div>
+
+    <ul id="list"></ul>
+  </div>
+
+<script>
+$(document).ready(function(){
+
+  // Add new task
+  $("#add").click(function(){
+    let task = $("#myInput").val().trim();
+    if(task !== ""){
+      $("#list").append(
+        `<li>
+          <span>${task}</span>
+          <div>
+            <button class="complete-btn">Complete</button>
+            <button class="remove-btn">X</button>
+          </div>
+        </li>`
+      );
+      $("#myInput").val(""); // clear input
+    }
+  });
+
+  // Mark as completed
+  $(document).on("click", ".complete-btn", function(){
+    $(this).closest("li").toggleClass("completed");
+  });
+
+  // Remove task
+  $(document).on("click", ".remove-btn", function(){
+    $(this).closest("li").remove();
+  });
+
+});
+</script>
+</body>
+</html>
